@@ -1,0 +1,25 @@
+<?php
+/* @var $this LocalMenu */
+
+if ( $this->_menuList )
+{
+?>
+<ul id="local-menu-list">
+<?
+foreach ( $this->_menuList as $item )
+{
+?>
+	<li><?=$item?></li>
+<?
+}
+?>
+</ul>
+<?
+}
+else 
+{
+?>
+<p><i>(нет пунктов меню)</i></p>
+<?
+}
+?>

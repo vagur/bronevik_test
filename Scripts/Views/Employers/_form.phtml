@@ -1,0 +1,23 @@
+<form action="" method="POST">
+    <ul class="errors">
+        <? if($this->errors) foreach($this->errors as $fld=>$err) {
+          echo '<li>'.$err.'</li>';
+        }
+        ?>
+    </ul>
+    <dl>
+        <?=HTMLInput::text($this->model, 'lastname', $this->employer['lastname'])?>
+        <?=HTMLInput::text($this->model, 'firstname', $this->employer['firstname'])?>
+        <?=HTMLInput::text($this->model, 'pname', $this->employer['pname'])?>
+        <?=HTMLInput::text($this->model, 'jobtitle', $this->employer['jobtitle'])?>
+        <?=HTMLInput::select($this->model, 'gender', [''=>'Не выбран', 'M'=>'Мужской', 'F'=>'Женский'],$this->employer['gender'])?>
+        <?=HTMLInput::datepicker($this->model, 'birthdate', $this->employer['birthdate'])?>
+        <?=HTMLInput::text($this->model, 'passport', $this->employer['passport'])?>
+        <?=HTMLInput::text($this->model, 'phone', $this->employer['phone'])?>
+        <?=HTMLInput::text($this->model, 'email', $this->employer['email'])?>
+        <?=HTMLInput::submit('Сохранить')?>
+    </dl>
+</form>
+<script src="/bower_components/jQuery-Mask-Plugin/dist/jquery.mask.min.js"></script>
+<script src="/bower_components/datetimepicker/jquery.datetimepicker.js"></script>
+<script src="/assets/js/emplyerform.js"></script>
