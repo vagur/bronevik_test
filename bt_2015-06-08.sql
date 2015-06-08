@@ -7,7 +7,7 @@
 #
 # Адрес: localhost (MySQL 5.5.33)
 # Схема: bt
-# Время создания: 2015-06-08 10:26:05 +0000
+# Время создания: 2015-06-08 13:31:22 +0000
 # ************************************************************
 
 
@@ -46,8 +46,8 @@ LOCK TABLES `employers` WRITE;
 
 INSERT INTO `employers` (`id`, `lastname`, `firstname`, `pname`, `jobtitle`, `gender`, `birthdate`, `passport`, `phone`, `email`, `deleted`)
 VALUES
-	(6,'Вагуров','Евгений','Сергеевич','наркоборон','M','2015-06-08','3333333333','9655334676','mail@vagurov.ru',0),
-	(7,'Иванов','Евгений','Михалыч','босс','M','2015-06-12','6666666666','3433656644','vagurov@positivesoft.ru',1);
+	(9,'Вагуров','Евгений','Сергеевич','наркоборон','M','1983-08-21','1111111111','9655334676','mail@vagurov.ru',0),
+	(10,'Иванов','Иван','Иваныч','старший менеджер','M','2016-02-09','2222222222','3333333345','vagurov@positivesoft.ru',1);
 
 /*!40000 ALTER TABLE `employers` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -81,10 +81,9 @@ LOCK TABLES `employers_history` WRITE;
 
 INSERT INTO `employers_history` (`id`, `employer_id`, `version`, `lastname`, `firstname`, `pname`, `jobtitle`, `gender`, `birthdate`, `passport`, `phone`, `email`, `deleted`)
 VALUES
-	(8,6,10,'Вагуров','Евгений','Сергеевич','наркоборон','M','2015-06-08','3333333333','9655334676','mail@vagurov.ru',0),
-	(9,7,11,'Иванов','Евгений','Сергеевич','упцкупкцуп','M','2015-06-12','6666666666','3433656644','vagurov@positivesoft.ru',0),
-	(10,7,12,'Иванов','Евгений','Михалыч','босс','M','2015-06-12','6666666666','3433656644','vagurov@positivesoft.ru',0),
-	(11,7,13,'','','','',NULL,NULL,NULL,NULL,NULL,1);
+	(15,9,20,'Вагуров','Евгений','Сергеевич','наркоборон','M','1983-08-21','1111111111','9655334676','mail@vagurov.ru',0),
+	(16,10,21,'Иванов','Иван','Иваныч','прораб','M','2016-02-09','2222222222','3333333333','vagurov@positivesoft.ru',0),
+	(17,10,22,'Иванов','Иван','Иваныч','старший менеджер','M','2016-02-09','2222222222','3333333345','vagurov@positivesoft.ru',0);
 
 /*!40000 ALTER TABLE `employers_history` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -99,20 +98,21 @@ CREATE TABLE `log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `type` enum('C','U','D') DEFAULT NULL,
   `employer_id` int(11) unsigned NOT NULL,
+  `dtime` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `employer_id` (`employer_id`)
+  KEY `employer_id` (`employer_id`),
+  KEY `dtime` (`dtime`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
 
-INSERT INTO `log` (`id`, `type`, `employer_id`)
+INSERT INTO `log` (`id`, `type`, `employer_id`, `dtime`)
 VALUES
-	(10,'C',6),
-	(11,'C',7),
-	(12,'U',7),
-	(13,'U',7),
-	(14,'D',7);
+	(20,'C',9,'2015-06-08 19:29:33'),
+	(21,'C',10,'2015-06-08 19:30:04'),
+	(22,'U',10,'2015-06-08 19:30:36'),
+	(23,'D',10,'2015-06-08 19:30:57');
 
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;

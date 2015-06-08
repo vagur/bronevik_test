@@ -49,7 +49,10 @@ class EmployerModel extends Model {
      */
     public function delete($id)
     {
-        $res = $this->update($id, ['deleted'=>1]);
+
+        $sql = 'UPDATE '.$this->_table.' SET deleted = 1 WHERE '.$this->_pkey.'=:key';
+        $stm  = $this->_db->prepare($sql);
+        $res = $stm->execute([':key'=>$id]);
         $this->afterDelete($id);
         return $res;
     }
@@ -68,7 +71,8 @@ class EmployerModel extends Model {
         $log = new LogModel();
         $version = $log->create([
             "type" => LogModel::OPERATION_UPDATE,
-            "employer_id" => $key
+            "employer_id" => $key,
+            "dtime" => date('Y-m-d H:i:s')
         ]);
 
         $this->createOrUpdateLog($version, $key, $data);
@@ -80,7 +84,8 @@ class EmployerModel extends Model {
         $log = new LogModel();
         $log->create([
             "type" => LogModel::OPERATION_DELETE,
-            "employer_id" => $key
+            "employer_id" => $key,
+            "dtime" => date('Y-m-d H:i:s')
         ]);
     }
 
@@ -89,7 +94,9 @@ class EmployerModel extends Model {
         $log = new LogModel();
         $version = $log->create([
             "type" => LogModel::OPERATION_CREATE,
-            "employer_id" => $key
+            "employer_id" => $key,
+            "dtime" => date('Y-m-d H:i:s')
+
         ]);
         $this->createOrUpdateLog($version, $key, $data);
     }

@@ -42,10 +42,31 @@ abstract class Model {
      */
     public function all()
     {
-        $stm = $this->_db->query('SELECT * FROM '.$this->_table);
+        $stm = $this->_db->query('SELECT * FROM '.$this->_table.' ORDER BY '.$this->_pkey.' ASC');
         $result = $stm->fetchAll(PDO::FETCH_ASSOC);
         $stm->closeCursor();
         return $result;
+    }
+
+    /**
+     * @param $sql
+     * @param $params
+     * @return bool
+     */
+    public function query($sql, $params)
+    {
+        $values=[];
+        foreach($params as $field=>$value) {
+            $values[':'.$field]=$value;
+        }
+
+        $stm  = $this->_db->prepare($sql);
+
+        $result = $stm->execute($values, PDO::FETCH_ASSOC);
+        $stm->closeCursor();
+        return $result;
+
+
     }
 
     /**

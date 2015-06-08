@@ -3,7 +3,8 @@
     echo TableWidget::grid($this->model, $this->employers, [
         'class'=>'table',
         'edit' => '/employers/update?id=',
-        'delete' => '/employers/delete?id='
+        'delete' => '/employers/delete?id=',
+        'log' => '/employers/employerlog?id=',
     ]);
 ?>
 <script src="/assets/js/main.js"></script>

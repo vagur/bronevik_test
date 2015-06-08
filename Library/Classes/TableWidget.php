@@ -19,6 +19,7 @@ class TableWidget {
         if(!isset($options['fields'])) $options['fields']=$model->getFields();
         if(!isset($options['edit'])) $options['edit']='./update?id=';
         if(!isset($options['edit'])) $options['edit']='./delete?id=';
+        if(!isset($options['log'])) $options['log']='./employerlog?id=';
 
 
         $html = '<table class="'.((isset($options['class']))?$options['class']:'').'">';
@@ -44,6 +45,7 @@ class TableWidget {
             $html.='<td>
                         <a href="'.$options['edit'].$row[$model->getPKey()].'" class="widget-table-grid-edit">редактировать</a>
                         <a href="'.$options['delete'].$row[$model->getPKey()].'" class="widget-table-grid-delete">удалить</a>
+                        <a href="'.$options['log'].$row[$model->getPKey()].'" class="widget-table-grid-log">история</a>
                     </td>';
         $html.='</tr>';
         }

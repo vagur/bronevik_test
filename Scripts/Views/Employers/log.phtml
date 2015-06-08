@@ -1,0 +1,34 @@
+<h1>История изменений</h1>
+<? foreach ($this->log as $item):?>
+    <div class="log_card">
+            <?
+                echo '<strong>'.$item['dt'].'</strong> ';
+                switch($item['type']){
+                    case LogModel::OPERATION_CREATE:
+                        echo 'Добавлен новый сотрудник #'.$item['id']." ".$item['lastname']." ".$item['firstname']. " ".$item['pname'];
+                        echo '<ul>';
+                        foreach($item['info'] as $ch){
+                            echo '<li>'.$ch.'</li>';
+                        }
+                        echo '</ul>';
+
+                        break;
+
+                    case LogModel::OPERATION_DELETE:
+                        echo 'Сотрудник #'.$item['id']." ".$item['lastname']." ".$item['firstname']. " ".$item['pname'].' удален';
+
+                        break;
+
+                    case LogModel::OPERATION_UPDATE:
+                        echo ' Изменения по сотруднику #'.$item['id']." ".$item['lastname']." ".$item['firstname']. " ".$item['pname'].'<br><br>';
+                        echo '<ul>';
+                        foreach($item['changes'] as $ch){
+                            echo '<li>'.$ch.'</li>';
+                        }
+                        echo '</ul>';
+
+                        break;
+                }
+            ?>
+    </div>
+<? endforeach?>

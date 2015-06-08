@@ -11,7 +11,7 @@ class EmployersController extends ActionController
     public function _init()
     {
         $this->_layout->LocalMenu->add('<a href="/employers/create/">Добавить сотрудника</a>');
-        //$this->_layout->LocalMenu->add('<a href="/employers/log/">История изменений</a>');
+        $this->_layout->LocalMenu->add('<a href="/employers/log/">История изменений</a>');
         $this->model = new EmployerModel();
 
     }
@@ -102,8 +102,55 @@ class EmployersController extends ActionController
         header('Location: /employers/');
     }
 
+    public function EmployerlogAction()
+    {
+        $id = intval($this->getRequest()->getParam('id'));
+
+
+        $logmodel = new LogModel();
+        $log = $logmodel->allByEmployer($id);
+
+        for($i = 0; $i < count($log); $i++){
+
+            $item = $log[$i];
+
+            if($item['type']==LogModel::OPERATION_UPDATE) {
+                $log[$i]['changes'] = $logmodel->getChanges($item['id'], $item['version']);
+            }
+
+            if($item['type']==LogModel::OPERATION_CREATE) {
+                $log[$i]['info'] = $logmodel->getFirstVersion($item['id']);
+            }
+
+
+        }
+
+        $this->_view->log = $log;
+        $this->_view->employer = $this->model->find($id);
+    }
+
     public function LogAction()
     {
+
+        $model = new LogModel();
+        $log = $model->all();
+
+        for($i = 0; $i < count($log); $i++){
+
+            $item = $log[$i];
+
+            if($item['type']==LogModel::OPERATION_UPDATE) {
+                $log[$i]['changes'] = $model->getChanges($item['id'], $item['version']);
+            }
+
+            if($item['type']==LogModel::OPERATION_CREATE) {
+                $log[$i]['info'] = $model->getFirstVersion($item['id']);
+            }
+
+
+        }
+
+        $this->_view->log = $log;
 
     }
 
