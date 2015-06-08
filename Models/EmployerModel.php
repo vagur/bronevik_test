@@ -49,8 +49,49 @@ class EmployerModel extends Model {
      */
     public function delete($id)
     {
-        return $this->update($id, ['deleted'=>1]);
+        $res = $this->update($id, ['deleted'=>1]);
+        $this->afterDelete($id);
+        return $res;
     }
 
+    private function createOrUpdateLog($version, $key, $data) {
+        $verModel = new EmployerHistoryModel();
+        unset($data['id']);
+        $data['version'] = $version;
+        $data['employer_id'] = $key;
+        $verModel->create($data);
+
+    }
+
+    public function afterUpade($key, Array $data)
+    {
+        $log = new LogModel();
+        $version = $log->create([
+            "type" => LogModel::OPERATION_UPDATE,
+            "employer_id" => $key
+        ]);
+
+        $this->createOrUpdateLog($version, $key, $data);
+    }
+
+    public function afterDelete($key)
+    {
+
+        $log = new LogModel();
+        $log->create([
+            "type" => LogModel::OPERATION_DELETE,
+            "employer_id" => $key
+        ]);
+    }
+
+    public function afterCreate($key, Array $data){
+
+        $log = new LogModel();
+        $version = $log->create([
+            "type" => LogModel::OPERATION_CREATE,
+            "employer_id" => $key
+        ]);
+        $this->createOrUpdateLog($version, $key, $data);
+    }
 
 }

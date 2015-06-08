@@ -63,7 +63,15 @@ abstract class Model {
         $sql.=join(',', $upd);
 
         $stm  = $this->_db->prepare($sql);
-        return $stm->execute($values);
+
+
+        if($stm->execute($values)){
+            $id = $this->_db->lastInsertId();
+            $this->afterCreate($id, $data);
+            return $id;
+        } else {
+            return false;
+        }
 
     }
 
@@ -84,18 +92,24 @@ abstract class Model {
 
         $sql.=' WHERE '.$this->_pkey.'=:key';
         $stm  = $this->_db->prepare($sql);
+
+        $this->afterUpade($key, $data);
+
         return $stm->execute($values);
 
     }
 
     /**
      * @param $id
+     * @return bool
      */
     public function delete($id)
     {
         $stm = $this->_db->query('DELETE FROM '.$this->_table.' WHERE '.$this->_pkey.' = '.$id);
         $result = $stm->execute();
         $stm->closeCursor();
+        $this->afterDelete($id);
+        return $result;
     }
 
     /**
@@ -134,6 +148,19 @@ abstract class Model {
     public function getRules()
     {
         return $this->_fieldsRules;
+    }
+
+
+    public function afterUpade($key, Array $data){
+
+    }
+
+    public function afterDelete($key){
+
+    }
+
+    public function afterCreate($key, Array $data){
+
     }
 
 }
