@@ -32,5 +32,25 @@ class EmployerModel extends Model {
     ];
 
 
+    /**
+     * @return array
+     */
+    public function all()
+    {
+        $stm = $this->_db->query('SELECT * FROM '.$this->_table.' WHERE deleted=0');
+        $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+        $stm->closeCursor();
+        return $result;
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function delete($id)
+    {
+        return $this->update($id, ['deleted'=>1]);
+    }
+
 
 }

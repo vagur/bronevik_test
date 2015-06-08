@@ -50,15 +50,27 @@ abstract class Model {
 
     /**
      * @param array $data
+     * @return bool
      */
     public function create(Array $data)
     {
+        $sql = 'INSERT INTO '.$this->_table.' SET ';
+        $upd=[];
+        foreach($data as $field=>$value) {
+            $upd[]=$field.'=:'.$field;
+            $values[':'.$field]=$value;
+        }
+        $sql.=join(',', $upd);
+
+        $stm  = $this->_db->prepare($sql);
+        return $stm->execute($values);
 
     }
 
     /**
      * @param $key - Primary key of row
      * @param array $data
+     * @return bool
      */
     public function update($key, Array $data){
         $sql = 'UPDATE '.$this->_table.' SET ';
